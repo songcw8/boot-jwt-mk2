@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserAccountServiceImpl implements UserAccountService {
@@ -23,6 +25,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserAccountService userAccountService;
 
     @Override
     public void join(UserAccountRequestDTO dto) throws BadRequestException {
@@ -34,6 +37,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         userAccount.setPassword(
                 passwordEncoder.encode(dto.password()) // 비밀번호를 평문으로 넣으면 안됨.
         );
+        userAccount.setRole("USER");
         try{
             userAccountRepository.save(userAccount);
         } catch (DataIntegrityViolationException ex){
@@ -52,7 +56,8 @@ public class UserAccountServiceImpl implements UserAccountService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.username(), dto.password())
         );
-        String token = jwtTokenProvider.generateToken(authentication);
+        UserAccount account = userAccountRepository.findByUsername(dto.username()).orElseThrow();
+        String token = jwtTokenProvider.generateToken(authentication, List.of(account.getRole()));
         return new TokenResponseDTO(token);
     }
 }

@@ -21,4 +21,6 @@ public class UserAccount {
     private String password; // BCrypt
     @CreationTimestamp
     private ZonedDateTime createAt = ZonedDateTime.now(ZoneOffset.UTC);
+    @Column(nullable = false)
+    private String role; // 보는 사람들이나 권한으로 느낌을 구분할 수 있겠다(User, Admin 이런거)
 }
