@@ -31,13 +31,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // 1. csrf 2. RequestMatchers 순서 이건 약간 예외처리 느낌인듯 작은 망부터 시작하는 느낌
         http
-                // .csrf
                 // .cors
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                 auth -> auth
+                        .requestMatchers("/api/auth/**")
+                        .permitAll()
                         .requestMatchers("/api/**")
                         .authenticated() //api로 접근하는 건 막겠다는 뜻
                         .anyRequest().permitAll())

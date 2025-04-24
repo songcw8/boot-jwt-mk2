@@ -16,7 +16,7 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Column(nullable = false, unique = true)
-    private String username;
+    private String username; // 겹치면 안된다네
     @Column(nullable = false)
     private String password; // BCrypt
     @CreationTimestamp
