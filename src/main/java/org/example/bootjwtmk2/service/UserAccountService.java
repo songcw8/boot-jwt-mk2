@@ -8,4 +8,7 @@ public interface UserAccountService {
     void join(UserAccountRequestDTO dto) throws BadRequestException;
 
     TokenResponseDTO login(UserAccountRequestDTO dto) throws BadRequestException;
+
+    void joinAdmin(UserAccountRequestDTO dto) throws BadRequestException;
+
 }

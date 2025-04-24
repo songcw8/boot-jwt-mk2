@@ -41,6 +41,8 @@ public class SecurityConfig {
                 auth -> auth
                         .requestMatchers("/api/auth/**")
                         .permitAll()
+                        .requestMatchers("/api/admin/**")
+                        .hasAnyRole("ADMIN")
                         .requestMatchers("/api/**")
                         .authenticated() //api로 접근하는 건 막겠다는 뜻
                         .anyRequest().permitAll())

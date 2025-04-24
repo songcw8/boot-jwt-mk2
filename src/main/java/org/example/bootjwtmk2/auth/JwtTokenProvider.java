@@ -44,6 +44,7 @@ public class JwtTokenProvider {
                 .subject(username)
                 .issuedAt(Date.from(now))
                 .expiration(expiration)
+                .claims(claims)
                 .signWith(getSecretKey(), Jwts.SIG.HS256)
                 .compact();
     }
@@ -83,7 +84,8 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         UserDetails user = new User(getUsername(token), "",
                 getRoles(token).stream()
-                        .map(SimpleGrantedAuthority::new).toList());
+                        .map(role -> new SimpleGrantedAuthority("ROLE_%s".formatted(role)))
+                        .toList());
         // 문자열 -> 권한 클래스 객체로
         return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }

@@ -35,6 +35,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/join2")
+    public ResponseEntity<Void> join2(UserAccountRequestDTO dto) throws BadRequestException {
+        // 어떤 예외를 허용할 거냐?
+        userAccountService.joinAdmin(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<String> badRequest(BadRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -44,6 +51,5 @@ public class AuthController {
     public ResponseEntity<String> usernameNotFound(UsernameNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
-
 
 }
