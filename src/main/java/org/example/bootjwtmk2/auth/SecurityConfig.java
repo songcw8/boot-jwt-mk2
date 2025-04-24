@@ -1,6 +1,7 @@
 package org.example.bootjwtmk2.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.example.bootjwtmk2.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,8 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService; // Service를 넣어도
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService.OAuth2LoginSuccessHandler successHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,6 +49,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/**")
                         .authenticated() //api로 접근하는 건 막겠다는 뜻
                         .anyRequest().permitAll())
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login/oauth2")
+                        .userInfoEndpoint(user -> user.userService(customOAuth2UserService))
+                        .successHandler(successHandler)
+                )
                 .authenticationProvider(daoAuthProvider())
                 .addFilterBefore(jwtFilter(),
                         UsernamePasswordAuthenticationFilter.class);
