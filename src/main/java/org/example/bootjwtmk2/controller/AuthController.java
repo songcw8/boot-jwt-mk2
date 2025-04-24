@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.example.bootjwtmk2.mode.dto.UserAccountRequestDTO;
-import org.example.bootjwtmk2.mode.repository.TokenResponseDTO;
+import org.example.bootjwtmk2.mode.dto.TokenResponseDTO;
 import org.example.bootjwtmk2.service.UserAccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
