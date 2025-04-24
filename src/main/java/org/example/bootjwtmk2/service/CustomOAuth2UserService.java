@@ -46,7 +46,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElseGet(() -> {
                     KakaoUser newUser = new KakaoUser();
                     newUser.setUsername(username);
-                    newUser.setEmail(email);
+                    //newUser.setEmail(email);
                     newUser.setName(nickname);
                     return kakaoUserRepository.save(newUser);
                 });

@@ -51,7 +51,8 @@ public class SecurityConfig {
                         .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login/oauth2")
-                        .userInfoEndpoint(user -> user.userService(customOAuth2UserService))
+                        .userInfoEndpoint(user -> user
+                                .userService(customOAuth2UserService))
                         .successHandler(successHandler)
                 )
                 .authenticationProvider(daoAuthProvider())
